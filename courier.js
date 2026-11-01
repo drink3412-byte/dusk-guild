@@ -1,0 +1,52 @@
+/* The Dusk Guild v0.4 — courier chronicle
+   Isolated add-on: no changes to v0.3 saves or combat.
+*/
+(()=>{
+'use strict';
+const PLOTS=[
+{id:'lost-lantern',ch:0,title:'소금숲의 꺼진 등불',where:'에델브룩 서문',story:'비를 맞은 행상인이 돌아오지 않은 호위대의 등불을 가져왔다. 그는 장부에 길드의 이름을 남겨 달라고 한다.',faction:'people',choices:[
+{label:'공개적으로 실종자 수색을 약속한다',desc:'65G 지출 · 주민 신뢰 +6 · 높은 성공 가능성',cost:65,bias:14,now:{people:6},win:{gold:135,renown:7},lose:{morale:-5,rival:7},yes:'숲길의 생존자들이 길드의 문을 두드렸다. 상인들은 약속을 지킨 길드에 보수를 보냈다.',no:'행상인의 증언이 엇갈렸다. 수색은 헛돌았고 주민들의 기대는 실망으로 바뀌었다.'},
+{label:'리아에게 비밀 정찰을 맡긴다',desc:'25G 지출 · 경쟁 압박 -3 · 높은 위험, 큰 보상',cost:25,bias:-8,now:{rival:-3},win:{gold:190,herb:2},lose:{gold:-35,rival:9},yes:'리아가 지름길과 버려진 물자를 발견했다. 아무도 모르게 길드 창고가 채워졌다.',no:'정찰 경로가 새어 나갔다. 백은의 사자단이 먼저 현장을 점거했다.'}]},
+{id:'sealed-ledger',ch:0,title:'검은 밀랍의 장부',where:'변두리 시장',story:'왕실 인장이 찍힌 장부 한 장이 암시장에 나타났다. 이름이 지워진 세금 징수 기록이다.',faction:'merchant',choices:[
+{label:'상단에 장부를 정식 감정 맡긴다',desc:'80G 지출 · 상단 신뢰 +7 · 안정적인 보상',cost:80,bias:15,now:{merchant:7},win:{gold:145,renown:6},lose:{court:-4,morale:-3},yes:'상단 회계사가 숨은 계약을 밝혀냈다. 왕도에서 사례금이 도착했다.',no:'장부의 일부가 위조된 것으로 드러났다. 궁정의 시선이 차가워졌다.'},
+{label:'이름을 지운 자를 직접 추적한다',desc:'30G 지출 · 궁정 신뢰 -3 · 위험한 정보 획득',cost:30,bias:-9,now:{court:-3},win:{crystal:1,renown:11},lose:{rival:13,gold:-50},yes:'추적 끝에 오래된 봉인석을 회수했다. 장부는 왕국의 다른 비밀을 가리켰다.',no:'추적자는 역으로 감시당했다. 경쟁 길드가 길드의 계획을 알아챘다.'}]},
+{id:'river-ferry',ch:1,title:'돌아오지 않는 나룻배',where:'유리강 남쪽',story:'강을 건넌 난민의 명단과 실제 인원이 다르다. 뱃사공은 무거운 은화 주머니를 건네며 조용히 넘어가 달라고 한다.',faction:'people',choices:[
+{label:'사람들을 위한 공개 조사단을 꾸린다',desc:'95G 지출 · 주민 신뢰 +8 · 신중한 조사',cost:95,bias:15,now:{people:8},win:{renown:13,gold:170},lose:{morale:-7,rival:6},yes:'숨겨졌던 탑승 명단이 밝혀졌다. 구조된 가족들이 길드의 이름을 전했다.',no:'조사가 지연되자 소문이 먼저 퍼졌다. 길드의 약속이 시험대에 올랐다.'},
+{label:'뱃사공의 은밀한 제안을 받아들인다',desc:'즉시 85G 획득 · 주민 신뢰 -8 · 후폭풍 위험',cost:0,bias:-16,now:{gold:85,people:-8},win:{gold:130,merchant:5},lose:{renown:-10,court:-9},yes:'상단은 길드가 지켜 준 비밀의 대가를 지불했다. 그러나 명단의 빈칸은 남아 있다.',no:'은밀한 거래가 드러났다. 의회에는 길드의 이름을 문제 삼는 투서가 쌓였다.'}]},
+{id:'abbey-bell',ch:2,title:'울리지 않는 수도원의 종',where:'백색 수도원',story:'한밤중 수도원의 종이 사라졌다. 사제들은 종을 되찾으려 하지만 기록관은 먼저 오래된 문서를 보라고 한다.',faction:'abbey',choices:[
+{label:'수도원의 의식을 보호하며 수색한다',desc:'110G 지출 · 수도원 신뢰 +9 · 보수적 접근',cost:110,bias:18,now:{abbey:9},win:{herb:3,renown:16},lose:{morale:-6,abbey:-5},yes:'사라진 종의 위치가 밝혀졌다. 수도원은 의약품과 새로운 증언으로 감사를 표했다.',no:'의식이 길어지며 기회가 사라졌다. 사제들이 길드의 판단을 의심하기 시작했다.'},
+{label:'기록관의 금지 문서를 먼저 열어본다',desc:'45G 지출 · 수도원 신뢰 -6 · 고위험 조사',cost:45,bias:-10,now:{abbey:-6},win:{crystal:2,renown:18},lose:{rival:16,gold:-65},yes:'문서 속 별의 문장이 월석 두 개를 가리켰다. 종이 울리지 않은 까닭이 밝혀졌다.',no:'봉인된 기록의 소문이 새었다. 백은의 사자단이 먼저 수도원에 압력을 넣었다.'}]},
+{id:'palace-invite',ch:3,title:'왕궁에서 온 빈 초대장',where:'왕도 외교원',story:'수신인의 이름이 없는 초대장이 길드에 배달됐다. 밀랍 아래에는 오래된 왕실 인장이 겹쳐 찍혀 있다.',faction:'court',choices:[
+{label:'공식 사절단을 보내 초대의 주인을 묻는다',desc:'125G 지출 · 궁정 신뢰 +9 · 협상 중심',cost:125,bias:16,now:{court:9},win:{gold:240,renown:16},lose:{court:-9,morale:-8},yes:'궁정의 서기관이 숨겨진 서한을 공개했다. 길드는 정치적 협상의 당사자가 되었다.',no:'사절단이 빈손으로 돌아왔다. 왕궁의 침묵이 길드를 둘러싼 소문을 키웠다.'},
+{label:'이사를 통해 초대장의 발신자를 찾는다',desc:'55G 지출 · 경쟁 압박 -5 · 큰 위험',cost:55,bias:-12,now:{rival:-5},win:{crystal:2,renown:23},lose:{rival:22,court:-8},yes:'가면 뒤의 발신자가 드러났다. 왕관의 비밀이 담긴 증거가 손에 들어왔다.',no:'잘못된 이름을 좇은 사이 궁정과 경쟁 길드가 길드의 움직임을 알아냈다.'}]},
+{id:'names-archive',ch:4,title:'이름을 잃어버린 기록관',where:'그림자 기록고',story:'한 기록관이 자신이 사라질 때를 적은 종이를 맡겼다. 며칠 뒤 그의 기록을 확인해 달라는 부탁이다.',faction:'people',choices:[
+{label:'주민들의 증언을 모아 이름을 지킨다',desc:'145G 지출 · 주민 신뢰 +10 · 공동체 조사',cost:145,bias:20,now:{people:10},win:{renown:28,morale:12},lose:{morale:-10,people:-7},yes:'기록에서 지워진 이름을 주민들이 기억해 냈다. 길드의 서약이 왕국에 퍼졌다.',no:'증언이 서로 충돌했지만 기록관의 마지막 부탁은 연대기에 남았다.'},
+{label:'금지된 서고와 직접 계약한다',desc:'70G 지출 · 궁정 신뢰 -7 · 위험한 지식',cost:70,bias:-14,now:{court:-7},win:{crystal:3,renown:25},lose:{rival:24,morale:-12},yes:'서고가 숨겨 둔 문장이 열렸다. 길드는 이름과 대가를 함께 적어 두었다.',no:'서고의 조건이 달라졌다. 동료들은 길드가 어디까지 약속했는지 묻기 시작했다.'}]},
+{id:'ordinary-supplies',ch:-1,title:'비에 젖은 보급품',where:'길드 창고',story:'운송대가 비에 젖은 보급품을 가져왔다. 곧 있을 원정을 위해 누가 먼저 손을 보태야 할까?',faction:'merchant',choices:[
+{label:'정식 운송비를 지불하고 물품을 정비한다',desc:'65G 지출 · 사기 +3 · 안정적인 보급',cost:65,bias:15,now:{morale:3},win:{herb:2,iron:3},lose:{gold:-20},yes:'물품 대부분을 살려 냈다. 다음 원정의 창고가 든든해졌다.',no:'일부 물품이 상했지만 대원들은 일을 마무리했다.'},
+{label:'값싼 중개인을 고용한다',desc:'20G 지출 · 소문으로 경쟁 압박 +3 · 위험한 거래',cost:20,bias:-7,now:{rival:3},win:{gold:145,iron:2},lose:{gold:-55,morale:-4},yes:'낮은 비용으로 쓸 만한 물품을 확보했다.',no:'중개인의 물품이 부족했다. 다시 물품을 구하느라 은화를 썼다.'}]},
+{id:'ordinary-visitors',ch:-1,title:'길드 회관의 방문자',where:'에델브룩 길드 회관',story:'회관 앞에 익명의 편지가 놓였다. 누군가는 도움을 바라고, 누군가는 길드의 실력을 시험하려 한다.',faction:'people',choices:[
+{label:'방문자에게 공개적으로 응답한다',desc:'70G 지출 · 주민 신뢰 +4 · 안정적인 신뢰',cost:70,bias:15,now:{people:4},win:{renown:9,gold:115},lose:{morale:-3},yes:'도움을 받은 사람들의 소문이 길드의 새로운 의뢰가 되었다.',no:'큰 성과는 없었지만 길드는 약속을 지켰다.'},
+{label:'편지의 발신자를 추적한다',desc:'25G 지출 · 경쟁 압박 -2 · 성과 불확실',cost:25,bias:-8,now:{rival:-2},win:{gold:175,renown:6},lose:{rival:11},yes:'발신자의 의도를 알아냈고 뜻밖의 후원자를 만났다.',no:'발신자는 자취를 감췄다. 경쟁 길드만이 길드의 움직임을 지켜봤다.'}]}
+];
+const RECUR=PLOTS.filter(x=>x.ch<0);
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+function dispatch(){if(!s)return null;if(!s.dispatch||typeof s.dispatch!=='object')s.dispatch={nextDay:1,lastChoiceDay:-1,seen:[],pending:[],history:[]};const d=s.dispatch;d.nextDay??=1;d.lastChoiceDay??=-1;if(!Array.isArray(d.seen))d.seen=[];if(!Array.isArray(d.pending))d.pending=[];if(!Array.isArray(d.history))d.history=[];return d}
+function available(){const d=dispatch();return d&&!s.ending&&!s.battle&&!s.expedition&&s.day>=d.nextDay&&d.lastChoiceDay!==s.day}
+function offer(){const d=dispatch();const current=PLOTS.find(x=>x.ch===s.chapter&&!d.seen.includes(x.id));const backlog=PLOTS.find(x=>x.ch>=0&&x.ch<s.chapter&&!d.seen.includes(x.id));return current||backlog||RECUR[Math.floor(s.day/3)%RECUR.length]}
+function apply(delta){if(!delta)return;for(const [k,v] of Object.entries(delta)){if(['people','merchant','abbey','court'].includes(k))s.factions[k]=clamp((s.factions[k]||0)+v,-100,100);else if(k==='rival')s.rival.pressure=clamp(s.rival.pressure+v,0,100);else if(['gold','renown'].includes(k))s[k]=Math.max(0,(s[k]||0)+v);else if(k==='morale')s.morale=clamp(s.morale+v,0,100);else if(['herb','iron','crystal'].includes(k))s.items[k]=Math.max(0,(s.items[k]||0)+v)}}
+function probability(plot,choice){const score=30+s.morale*.35+Math.min(20,s.renown*.07)+(s.factions[plot.faction]||0)*.22-s.rival.pressure*.17+choice.bias+(s.day%7)-3;return Math.round(score)}
+function settle(){const d=dispatch();if(!d)return;let changed=false;const keep=[];for(const x of d.pending){if(s.day<x.due){keep.push(x);continue}const plot=PLOTS.find(p=>p.id===x.id),choice=plot?.choices[x.choice];if(!choice)continue;const score=probability(plot,choice),threshold=55+Math.max(0,plot.ch)*7,won=score>=threshold;apply(won?choice.win:choice.lose);const note=won?choice.yes:choice.no;d.history.unshift({day:s.day,title:plot.title,won,note});d.history=d.history.slice(0,30);journal('전령의 후속 보고 · '+plot.title+': '+note);changed=true}d.pending=keep;return changed}
+const oldHall=renderHall;
+renderHall=function(){const base=oldHall();const d=dispatch();const can=available(),p=can?offer():null;const pending=d.pending.map(x=>'<div class="feed-item"><small>왕력 '+x.due+'일 보고 예정</small>'+esc(x.title)+' · 진행 중</div>').join('');const recent=d.history.slice(0,2).map(x=>'<div class="feed-item"><small>제'+x.day+'일 · '+(x.won?'성과':'후폭풍')+'</small>'+esc(x.note)+'</div>').join('');return base+'<section class="surface" style="margin-top:18px"><div class="card-kicker">THE COURIER · v0.4</div><h3>왕국의 전령 · 선택의 후일담</h3><p>원정 밖에서도 왕국은 움직입니다. 사건에 개입하면 비용과 평판이 즉시 달라지고, 며칠 뒤 성과나 후폭풍이 찾아옵니다. 해결 시점의 사기·명성·세력 신뢰가 결과에 영향을 줍니다.</p>'+(p?'<div class="excerpt"><b>'+esc(p.title)+'</b> · '+esc(p.where)+'<p>'+esc(p.story)+'</p></div><div class="row"><button class="btn btn-gold" data-action="v4-open">봉투 열기 · 결단 내리기</button></div>':'<p style="opacity:.8">다음 봉투: 왕력 '+d.nextDay+'일'+(s.ending?' · 연대기 완결':'')+'</p>')+pending+recent+'</section>'};
+const oldArchive=renderArchive;
+renderArchive=function(){const original=oldArchive(),d=dispatch();if(!d.history.length&&!d.pending.length)return original;return original+'<section class="surface" style="margin-top:18px"><div class="card-kicker">COURIER REPORTS</div><h3>전령의 후일담</h3>'+d.history.map(x=>'<div class="feed-item"><small>제'+x.day+'일 · '+(x.won?'성과':'후폭풍')+'</small><b>'+esc(x.title)+'</b> · '+esc(x.note)+'</div>').join('')+'</section>'};
+const oldModal=renderModal;
+renderModal=function(){if(ui.modal?.type!=='v4-courier')return oldModal();const p=available()?offer():null;if(!p){ui.modal=null;return oldModal()}const body='<div class="excerpt">'+esc(p.story)+'</div><p>며칠 뒤의 후속 결과는 현재와 미래의 길드 상태에 달려 있습니다. 위험한 선택일수록 기대 보상이 큽니다.</p><div class="choice-list">'+p.choices.map((c,i)=>'<button class="choice" data-action="v4-pick" data-id="'+i+'" '+(s.gold<c.cost?'disabled':'')+'><b>'+esc(c.label)+'</b><small>'+esc(c.desc)+' · '+(s.gold<c.cost?'은화 부족':'선택 가능')+'</small></button>').join('')+'</div>';const root=$('modalRoot');root.innerHTML=modalShell(p.title,'ROYAL COURIER · '+p.where,body,'<button class="btn btn-plain" data-action="close-modal">결정 보류</button>',true)};
+function pick(i){if(!available())return;const p=offer(),c=p.choices[i],d=dispatch();if(!c||s.gold<c.cost)return notify('은화가 부족하거나 선택할 수 없습니다.');s.gold-=c.cost;apply(c.now);d.pending.push({id:p.id,choice:i,due:s.day+2+Math.max(0,p.ch%2),title:p.title});d.lastChoiceDay=s.day;d.nextDay=s.day+3;if(p.ch>=0&&!d.seen.includes(p.id))d.seen.push(p.id);journal('전령의 봉투 · '+p.title+': '+c.label+'. 후속 보고를 기다린다.');ui.modal=null;render();notify('선택이 기록됐습니다. 며칠 뒤 결과가 도착합니다.')}
+document.addEventListener('click',e=>{const node=e.target.closest('[data-action="v4-open"],[data-action="v4-pick"]');if(!node)return;e.preventDefault();e.stopImmediatePropagation();if(node.dataset.action==='v4-open'){if(available()){ui.modal={type:'v4-courier'};renderModal()}}else pick(Number(node.dataset.id))},true);
+const oldRest=restDay,oldFinish=finishResult;
+restDay=function(...args){const day=s?.day;const r=oldRest(...args);if(s&&s.day!==day&&settle())render();return r};
+finishResult=function(...args){const day=s?.day;const r=oldFinish(...args);if(s&&s.day!==day&&settle())render();return r};
+window.DuskGuildCourier={getState:()=>dispatch(),offer:()=>s?offer():null,settle};
+})();

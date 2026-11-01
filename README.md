@@ -2,7 +2,7 @@
 
 > 왕들이 침묵하고 별들이 이름을 잃은 시대. 이제 길드가 역사를 기록한다.
 
-**v0.2.0 · Chronicle of Consequences / 선택의 파장**
+**v0.3.0 · 선술집의 악사 / 오리지널 판타지 BGM 3곡 포함**
 
 어두운 중세 판타지 일러스트와 양피지형 화면을 기반으로 하는 **페이지형 길드 경영 · 스토리 · 파티 전술 RPG**입니다. PC·태블릿·스마트폰에서 실행할 수 있습니다. 기존 「잔월의 서약」과는 별도 프로젝트입니다.
 
@@ -84,3 +84,12 @@
 - 음악 설정은 `dusk_guild_music_v1`에 별도로 저장하며 기존 게임 저장 데이터 `dusk_guild_save_v1`는 수정하지 않습니다.
 - 단일 HTML은 3곡 음원을 포함하여 인터넷 연결 없이 재생 가능합니다. 개발자 소스는 외부 mp3 파일을 참조합니다.
 - 악보 및 재현용 코드: `scripts/compose_bgm.py` (General MIDI 사운드폰트로 원본 음표 데이터를 렌더링). **사운드폰트는 소스 배포에 포함하지 않습니다.**
+## GitHub Pages 배포
+
+저장소의 `Settings → Pages`에서 Source를 `Deploy from a branch`, Branch를 `main`, Folder를 `/(root)`로 설정한 다음 Save합니다.
+
+배포 후 주소: https://drink3412-byte.github.io/dusk-guild/
+
+- `index.html`은 분리된 CSS/JS와 `assets/`, `audio/`를 불러오는 웹 배포용 파일입니다.
+- `offline.html`은 BGM·삽화를 포함하는 단독 실행본으로, 다운로드 후 인터넷 없이 실행할 수 있습니다.
+- `audio/`에 오리지널 MP3 3곡, `assets/`에 게임 삽화 16개가 있습니다.

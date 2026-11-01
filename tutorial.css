@@ -1,0 +1,47 @@
+/* v0.5: first-day tutorial — medieval parchment and gold */
+.guide-first{position:relative;margin:0 0 20px;padding:20px 22px 16px;border:1px solid #cda96d88;background:linear-gradient(132deg,#31413e,#192d30 52%,#172427);box-shadow:inset 0 1px 0 #fff2,0 15px 30px #0005;border-radius:7px}
+.guide-first:before{content:'';position:absolute;inset:5px;pointer-events:none;border:1px solid #b6956030;border-radius:3px}
+.guide-topline{display:flex;justify-content:space-between;gap:10px;font-size:10px;letter-spacing:.15em;color:#d9b985;font-family:'Cinzel','Noto Serif KR',serif}
+.guide-sequence{color:#eddfc8;white-space:nowrap}
+.guide-main{display:flex;align-items:flex-start;gap:17px;margin:13px 0 15px}
+.guide-crest{display:grid;place-items:center;flex:0 0 50px;height:50px;border:1px solid #d4af7370;color:#e3c38e;background:#0e2228;font-size:25px}
+.guide-main h3{font-size:23px;line-height:1.35;color:#f3dfb6;margin:0 0 7px;letter-spacing:-.035em}
+.guide-main p{font-size:13px;line-height:1.9;color:#e4e1d6;margin:0}
+.guide-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-left:67px}
+.guide-actions .btn{min-height:39px}
+.guide-hide{font-size:11px;padding:8px;color:#c7c8bf;background:transparent;border:0}
+.guide-hide:hover{color:#fff}
+.guide-current{margin:17px 0 0;padding:11px 14px;display:flex;gap:11px;align-items:start;background:#0e1d22aa;border-left:2px solid #c39b64;font-size:11px;color:#cbd4cf;line-height:1.8}
+.guide-current b{color:#e5c78f;flex:0 0 178px}
+.guild-help-fab{position:fixed;right:22px;bottom:22px;z-index:15;min-height:44px;padding:0 16px;border-radius:24px;border:1px solid #d3ad70;background:#172a2d;color:#f1d7a7;box-shadow:0 6px 26px #0009;font-size:12px;font-weight:700;letter-spacing:.03em}
+.guild-help-fab:hover{background:#314038}
+.app.hidden ~ .guild-help-fab{display:none!important}
+.guide-modal-tip{margin:10px 18px 13px;padding:11px 14px;background:#354036;border:1px solid #a89a6a60;border-left:3px solid #d6b378;color:#e2dfd0;font-size:12px;line-height:1.75}
+.guide-modal-tip span{display:block;color:#f0d7a1;font-size:10px;letter-spacing:.1em;margin:0 0 3px}
+.guide-modal-tip p{margin:0 0 4px!important;line-height:1.8}
+.guide-modal-tip button{padding:2px 0;color:#f1d7a7;background:transparent;border:0;font-size:11px;text-decoration:underline;text-underline-offset:3px}
+#tutorialOverlay[hidden]{display:none!important}
+#tutorialOverlay{position:fixed;inset:0;z-index:200}
+.guide-backdrop{position:absolute;inset:0;padding:18px;display:flex;align-items:center;justify-content:center;background:#050a0cd9;backdrop-filter:blur(5px)}
+.guide-book{width:min(720px,100%);max-height:min(90dvh,760px);overflow:auto;background:linear-gradient(150deg,#25363a,#122228);color:#f2e6d2;border:1px solid #caa66b;box-shadow:0 23px 100px #000b;border-radius:7px;padding:21px 25px 23px}
+.guide-book-top{display:flex;align-items:start;justify-content:space-between;gap:12px}
+.guide-book-top h2{font-size:27px;margin:6px 0 16px;color:#f2d9ab}
+.guide-x{width:35px;height:35px;flex:0 0 35px;border:1px solid #957b53;background:#16252b;color:#e8d2b1;font-size:26px}
+.guide-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;border-bottom:1px solid #c9a67666;padding-bottom:12px}
+.guide-tabs button{min-height:43px;border:1px solid #c9a67644;color:#ddceaf;background:#1b2a2d;font-size:12px}
+.guide-tabs button.active{color:#1c2a2c;background:#d2af75;border-color:#e3ca9c;font-weight:700}
+.guide-book-content{padding:17px 2px 7px;font-size:13px;line-height:1.9;min-height:190px}
+.guide-book-content h3{color:#f0d5a0;font-size:20px;margin:0 0 12px}
+.guide-book-content p{line-height:1.9;margin:0 0 12px}
+.guide-book-content ol{padding-left:23px;margin:0 0 14px}
+.guide-book-content li{margin:6px 0}
+.guide-book-content b{color:#f0d4a1}
+.guide-muted{font-size:12px;color:#bfc9c7}
+.guide-dictionary{margin:0}
+.guide-dictionary div{display:grid;grid-template-columns:150px 1fr;gap:15px;padding:10px 0;border-bottom:1px solid #cba97a30}
+.guide-dictionary dt{color:#efd2a1;font-weight:700}
+.guide-dictionary dd{margin:0;color:#d5dcd5}
+.guide-book-actions{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;border-top:1px solid #cba97a44;padding-top:17px}
+@media(max-width:920px){.guild-help-fab{bottom:82px;right:15px}}
+@media(max-width:640px){.guide-first{padding:16px 13px 13px;margin-bottom:14px}.guide-topline{font-size:9px}.guide-main{gap:10px;margin:10px 0}.guide-crest{flex-basis:38px;height:38px;font-size:18px}.guide-main h3{font-size:19px}.guide-main p{font-size:12px;line-height:1.75}.guide-actions{margin-left:0;gap:6px}.guide-actions .btn{flex:1;min-width:130px;padding:7px}.guide-hide{margin-left:auto}.guide-current{display:block;margin-top:12px;padding:9px;font-size:11px}.guide-current b{display:block;margin:0 0 4px}.guide-modal-tip{margin:9px 11px;padding:9px 10px;font-size:11px}.guild-help-fab{font-size:11px;padding:0 12px;min-height:42px;right:12px;bottom:calc(80px + env(safe-area-inset-bottom,0px))}.guide-backdrop{padding:8px}.guide-book{max-height:95dvh;padding:17px 14px 17px}.guide-book-top h2{font-size:22px}.guide-tabs{gap:3px}.guide-tabs button{font-size:11px;min-height:38px;padding:4px}.guide-book-content{font-size:12px;line-height:1.7;padding:13px 2px}.guide-book-content h3{font-size:17px}.guide-dictionary div{grid-template-columns:112px 1fr;gap:8px}.guide-book-actions .btn{flex:1;min-width:110px}}
+@media(prefers-reduced-motion:reduce){.guild-help-fab,.guide-first{transition:none}}

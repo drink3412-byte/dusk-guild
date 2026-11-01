@@ -55,12 +55,13 @@ function sync(){
  const rep=$('headerRep')?.closest('.res');if(rep)rep.title='명성: 의뢰를 해결하며 높이는 길드 평판';
 }
 function annotate(){
- if(!s||guideState()?.hidden)return;
- const tip=TIPS[ui.modal?.type];if(!tip)return;
+ if(!s)return;
+ const type=ui.modal?.type,tip=TIPS[type];if(!tip)return;
  const root=$('modalRoot');if(root.querySelector('.guide-modal-tip'))return;
  const dialog=root.querySelector('.dialog');if(!dialog)return;
  const node=document.createElement('div');node.className='guide-modal-tip';
- node.innerHTML='<span>✦ 길드장 조언</span><p>'+tip+'</p><button type="button" data-tutorial="open">자세히 알아보기 ↗</button>';
+ const step=type==='prepare'?'03 / 04 · 원정대 편성':type==='battle'?'04 / 04 · 전술 전투':type==='result'?'첫 원정 마무리':'03 / 04 · 현장 판단';
+ node.innerHTML=guideState()?.hidden?'<span>✦ 길드장 안내</span><button type="button" data-tutorial="open">? 이 화면 설명 보기 ↗</button>':'<span>✦ 길드장 조언 · '+step+'</span><p>'+tip+'</p><button type="button" data-tutorial="open">자세히 알아보기 ↗</button>';
  const anchor=dialog.querySelector(ui.modal.type==='battle'?'.intent-v2':'.dialog-header')||dialog.querySelector(ui.modal.type==='battle'?'.battle-panel':'.battle-header');
  if(anchor)anchor.insertAdjacentElement('afterend',node);else dialog.insertAdjacentElement('afterbegin',node);
 }
